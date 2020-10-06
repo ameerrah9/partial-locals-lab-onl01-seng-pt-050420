@@ -15,10 +15,6 @@ class Student < ActiveRecord::Base
   has_many :classrooms, through: :classroom_students
 
   def self.search(query)
-    if query.present?
-      self.where("name LIKE ?", "%M%")
-    else
-      self.all
-    end 
-  end 
+    query.present? ? self.all.select {|s| s.name.downcase.include?(query.downcase)} : self.all
+  end  
 end
